@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { initialState, transition, type Action, type State } from "./model";
 import { parseState, readState, saveState, type StoragePort } from "./storage";
+import { withWorkEvidenceScenario } from "./work-evidence-scenario";
 function browserStorage(): StoragePort | null {
   try {
     return window.localStorage;
@@ -10,7 +11,9 @@ function browserStorage(): StoragePort | null {
 }
 function useStore() {
   const [loaded] = useState(() => readState(browserStorage()));
-  const [state, setState] = useState(loaded.state);
+  const [state, setState] = useState(() =>
+    loaded.blocked ? loaded.state : withWorkEvidenceScenario(loaded.state),
+  );
   const [issue, setIssue] = useState(loaded.issue);
   const [error, setError] = useState("");
   const [blocked, setBlocked] = useState(loaded.blocked);
@@ -63,7 +66,7 @@ function useStore() {
     run,
     importState,
     clearError: () => setError(""),
-    reset: () => commit(initialState(), true),
+    reset: () => commit(withWorkEvidenceScenario(initialState()), true),
   };
 }
 type Store = ReturnType<typeof useStore>;

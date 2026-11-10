@@ -19,6 +19,7 @@ export function ApplicationRecord({
   audience,
   history,
   statusRef,
+  answerSupplement,
   children,
   footer,
 }: {
@@ -30,6 +31,7 @@ export function ApplicationRecord({
   audience: "candidate" | "employer";
   history: RecordEvent[];
   statusRef?: Ref<HTMLSpanElement>;
+  answerSupplement?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
 }) {
@@ -75,6 +77,11 @@ export function ApplicationRecord({
                 <>
                   <h3>Przesłana aplikacja</h3>
                   <p>{application.answer}</p>
+                  {answerSupplement && (
+                    <div className="record-section record-answer-supplement">
+                      {answerSupplement}
+                    </div>
+                  )}
                 </>
               ),
             },

@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ApplicationRecord } from "./application-record";
 import { nextStages, stageLabels, type Application } from "./model";
 import { usePrototype } from "./store";
+import { WorkEvidenceSection } from "./work-evidence-section";
 
 export function RecruitingApplication({ application }: { application: Application }) {
   const { state, run } = usePrototype();
@@ -29,6 +30,13 @@ export function RecruitingApplication({ application }: { application: Applicatio
         audience="employer"
         history={application.events}
         statusRef={statusRef}
+        answerSupplement={
+          <WorkEvidenceSection
+            applicationId={application.id}
+            answer={application.answer}
+            jobTitle={application.jobTitle}
+          />
+        }
         footer={
           availableStages.length > 0 ? (
             <>
